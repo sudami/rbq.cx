@@ -22,7 +22,7 @@ router
         const domain: string = ctx.request.headers.host;
         const url: string = ctx.query.url;
         const expires_in: string = ctx.query.expires_in;
-        if (url == null || !isURL(url)) {
+        if (url == null || !isURL(url, { require_protocol: true })) {
             return ctx.body = { url: null, err: "Please enter a correct URL." }
         }
         if (expires_in != undefined && !isISO8601(expires_in)) {
