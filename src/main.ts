@@ -19,6 +19,7 @@ db.run(
 const router: Router = new Router();
 router
     .get('/api', async ctx => {
+        const domain: string = ctx.request.headers.host;
         const url: string = ctx.query.url;
         const expires_in: string = ctx.query.expires_in;
         if (url == null || !isURL(url)) {
@@ -27,12 +28,14 @@ router
         if (expires_in != undefined && !isISO8601(expires_in)) {
             return ctx.body = { url: null, err: "Please enter a valid ISO-8601 date." }
         }
+        if (new RegExp(`https?://${domain.replace(/\./g, '\\.')}`).test(url)) {
+            return ctx.body = { url: null, err: "The URL has been shortened." }
+        }
         const base64: string = Buffer.from(url).toString('base64').replace(/=/g, '');;
         let object_id: string = '';
         for (let i = 0; i < 8; i++) {
             object_id += base64.charAt(Math.round(Math.random() * base64.length))
         }
-        const domain: string = ctx.request.headers.host;
         const row: any = await execSQL(`SELECT * FROM urls WHERE object_id = \'${object_id}\' OR url = \'${url}\'`);
         if (row.length == 0) {
             db.run(`INSERT INTO urls VALUES (\'${object_id}\', \'${url}\', \'${expires_in}\')`);
