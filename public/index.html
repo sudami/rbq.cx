@@ -37,6 +37,7 @@ body header {
   font-size: 34px;
   text-transform: uppercase;
 }
+
 .description {
   margin: 16px 0 0 0;
   line-height: 1em;
@@ -44,14 +45,16 @@ body header {
   font-size: 16px;
   font-weight: normal;
 }
+
 main {
-  width: auto;
   margin: 56px 0 0 0;
 }
+
 input {
   display: inline-block;
   vertical-align: middle;
 }
+
 #url {
   width: 320px;
   height: 32px;
@@ -61,10 +64,18 @@ input {
   border-radius: 4px 0 0 4px;
   color: #333;
 }
+
 #url:focus {
   border-color: #ff4665;
   transition: .2s border ease;
 }
+
+@media screen and (max-width: 480px) {
+    #url {
+        width: 65%
+    }
+}
+
 #submit {
   width: 72px;
   height: 36px;
@@ -74,12 +85,15 @@ input {
   border: none;
   cursor: pointer;
 }
+
 #submit:hover {
   opacity: .75;
 }
+
 #submit:active {
   opacity: .9;
 }
+
 footer {
   width: 100%;
   height: 64px;
@@ -87,6 +101,7 @@ footer {
   position: absolute;
   color: #7e7e7e;
 }
+
 footer a {
   color:#ff4665;
 }
