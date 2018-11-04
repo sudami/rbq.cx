@@ -32,12 +32,13 @@ router
         for (let i = 0; i < 8; i++) {
             object_id += base64.charAt(Math.round(Math.random() * base64.length))
         }
+        const domain: string = ctx.request.headers.host;
         const row: any = await execSQL(`SELECT * FROM urls WHERE object_id = \'${object_id}\' OR url = \'${url}\'`);
         if (row.length == 0) {
             db.run(`INSERT INTO urls VALUES (\'${object_id}\', \'${url}\', \'${expires_in}\')`);
-            ctx.body = { url: `https://rbq.cx/${object_id}`, err: null }
+            ctx.body = { url: `https://${domain}/${object_id}`, err: null }
         } else if (row[0].url == url) {
-            ctx.body = { url: `https://rbq.cx/${row[0].object_id}`, err: null }
+            ctx.body = { url: `https://${domain}/${row[0].object_id}`, err: null }
         } else if (row[0].object_id == object_id) {
             ctx.body = { url: null, err: "Internal server error, please retry." }
         }

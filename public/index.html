@@ -118,7 +118,7 @@ footer a {
 window.generate = () =>{
   const urlEl = document.getElementById('url');
   const url = urlEl.value;
-  fetch(`http://localhost:3000/api?url=${encodeURIComponent(url)}`)
+  fetch(`http://${document.domain}/api?url=${encodeURIComponent(url)}`)
     .then((res) => {
       return res.json();
     })
