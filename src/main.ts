@@ -58,6 +58,7 @@ router
         }
         const expires_in: string = row[0].expires_in;
         if (expires_in == 'undefined' || Date.now() < Date.parse(expires_in)) {
+            ctx.status = 301;
             ctx.redirect(row[0].url)
         } else {
             db.run(`DELETE FROM urls WHERE object_id = \'${object_id}\'`);
