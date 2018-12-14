@@ -1,5 +1,7 @@
 import * as Koa from 'koa'
 import * as Router from 'koa-router'
+import * as helmet from 'koa-helmet'
+import * as bodyParser from 'koa-bodyparser'
 import * as SQLite from 'sqlite3'
 import { isURL, isISO8601 } from 'validator'
 import serve = require('koa-static')
@@ -16,12 +18,17 @@ db.run(
     'expires_in TEXT)'
 );
 
+const rateLimiter = () => {
+
+}
+
 const router: Router = new Router();
 router
-    .get('/api', async ctx => {
+    .post('/api', rateLimiter, async ctx => {
+        const args = ctx.request.body;
         const domain: string = ctx.request.headers.host;
-        const url: string = ctx.query.url;
-        const expires_in: string = ctx.query.expires_in;
+        const url: string = args.url;
+        const expires_in: string = args.expires_in;
         if (url == null || !isURL(url, { require_protocol: true })) {
             return ctx.body = { url: null, err: "Please enter a correct URL." }
         }
@@ -31,7 +38,7 @@ router
         if (new RegExp(`https?://${domain.replace(/\./g, '\\.')}`).test(url)) {
             return ctx.body = { url: null, err: "The URL has been shortened." }
         }
-        const base64: string = Buffer.from(url).toString('base64').replace(/=/g, '');;
+        const base64: string = Buffer.from(url).toString('base64').replace(/=/g, '');
         let object_id: string = '';
         for (let i = 0; i < 8; i++) {
             object_id += base64.charAt(Math.round(Math.random() * base64.length))
@@ -68,6 +75,8 @@ router
 
 const app: Koa = new Koa();
 app.use(serve('./public'));
+app.use(helmet());
+app.use(bodyParser());
 app.use(router.routes());
 app.listen(PORT, () => {
     console.log(`Server started at http://127.0.0.1:${PORT}`)

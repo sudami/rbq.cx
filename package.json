@@ -11,10 +11,12 @@
     "start": "tsc && node ./dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "KagurazakaHanabi",
   "license": "MIT",
   "dependencies": {
     "koa": "^2.6.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-helmet": "^4.0.0",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "sqlite3": "^4.0.3",
@@ -22,6 +24,8 @@
   },
   "devDependencies": {
     "@types/koa": "^2.0.46",
+    "@types/koa-bodyparser": "^4.2.1",
+    "@types/koa-helmet": "^3.1.2",
     "@types/koa-router": "^7.0.32",
     "@types/koa-static": "^4.0.0",
     "@types/sqlite3": "^3.1.3",
