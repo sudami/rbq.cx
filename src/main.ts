@@ -18,8 +18,8 @@ db.run(
     'expires_in TEXT)'
 );
 
-const rateLimiter = () => {
-
+const rateLimiter: Router.IMiddleware = async (ctx, next) => {
+    await next()
 }
 
 const router: Router = new Router();
